@@ -1,0 +1,6 @@
+# Arquivos temporários gerados pelo Python
+__pycache__/
+*.pyc
+
+# Ambiente virtual do Python
+.venv/
