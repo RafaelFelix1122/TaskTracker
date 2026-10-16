@@ -1,6 +1,16 @@
 from datetime import datetime
 
-lista_tarefas = []
+lista_tarefas = [
+    {
+        "responsavel": "Rafael",
+        "titulo": "Estudar Python",
+        "descricao": "Revisar listas, dicionários e repetições.",
+        "prioridade": "média",
+        "Status": "Pendente",
+        "prazo": datetime(2026, 12, 20, 18, 30),
+        "categoria": "Estudo"
+    }
+]
 
 print("Bem-vindo ao TaskTracker!")
 
@@ -13,6 +23,10 @@ while True:
     opcao = input("Escolha uma opção: ")
 
     if opcao == "1":
+
+        responsavel = input(
+            "Responsável (Enter para deixar sem responsável): "
+        ).strip()
 
         while True:
             titulo = input("Digite o título da tarefa: ").strip()
@@ -29,6 +43,10 @@ while True:
                 break
             print("Prioridade inválida. Escolha Alta, Média ou Baixa.")
 
+        categoria = input(
+            "Categoria (ex.: Trabalho, Estudo, Reunião; Enter para deixar sem categoria): "
+        ).strip()
+
         while True:
             prazo_texto = input(
                 "Digite o prazo da tarefa (formato DD/MM/AAAA): ").strip()
@@ -43,9 +61,11 @@ while True:
                 print("Formato de data inválido. Use DD/MM/AAAA HH:MM.")
 
         tarefa = {
+            "responsavel": responsavel,
             "titulo": titulo,
             "descricao": descricao,
             "prioridade": prioridade,
+            "categoria": categoria,
             "Status": "Pendente",
             "prazo": prazo
         }
@@ -57,13 +77,22 @@ while True:
             print("Nenhuma tarefa cadastrada.")
         else:
             print("Lista de tarefas:")
+
             for i, tarefa in enumerate(lista_tarefas, start=1):
-                 print(
-                    f"{i}. Título: {tarefa['titulo']} "
+                if tarefa["prazo"] < datetime.now() and tarefa["Status"] != "Concluída":
+                    situacao_prazo = "Atrasada"
+                else:
+                    situacao_prazo = "Sem atraso"
+
+                print(
+                    f"{i}. Responsável: {tarefa['responsavel'] or 'Não atribuído'}"
+                    f" Título: {tarefa['titulo']} "
                     f"- Descrição: {tarefa['descricao']} "
                     f"- Prioridade: {tarefa['prioridade'].capitalize()} "
+                    f"- Categoria: {tarefa['categoria'] or 'Sem categoria'}"
+                    f"- Prazo: {tarefa['prazo'].strftime('%d/%m/%Y %H:%M')} "
+                    f"- Situação do prazo: {situacao_prazo} "
                     f"- Status: {tarefa['Status']} "
-                    f"- Prazo: {tarefa['prazo'].strftime('%d/%m/%Y %H:%M')}"
                 )
             print("Digite o número da tarefa para marcar como concluída ou '0' para voltar ao menu.")
             while True:
