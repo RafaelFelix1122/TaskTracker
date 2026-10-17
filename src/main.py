@@ -1,5 +1,7 @@
 from datetime import datetime
 
+ordem_prioridade = {"alta": 1, "média": 2, "baixa": 3}
+
 lista_tarefas = [
     {
         "responsavel": "Rafael",
@@ -21,6 +23,7 @@ while True:
     print("2 - Listar tarefas")
     print("3 - Editar tarefa")
     print("4 - Excluir tarefa")
+    print("5 - Listar status da tarefa")
     print("0 - Sair")
 
     opcao = input("Escolha uma opção: ").strip()
@@ -106,6 +109,23 @@ while True:
             print("Nenhuma tarefa cadastrada.")
 
         else:
+            while True:
+                print("Como deseja ordenar as tarefas?")
+                print("1 - Alta prioridade primeiro")
+                print("2 - Baixa prioridade primeiro")
+
+                escolha_ordem = input("Escolha uma opção: ").strip()
+
+                if escolha_ordem in ["1", "2"]:
+                    break
+
+                print("Opção inválida. Escolha 1 ou 2.")
+
+            lista_tarefas.sort(
+                key=lambda tarefa: ordem_prioridade[tarefa["prioridade"]],
+                reverse=(escolha_ordem == "2")
+            )
+
             print("Lista de tarefas:")
 
             for i, tarefa in enumerate(lista_tarefas, start=1):
@@ -190,6 +210,7 @@ while True:
                         "Escolha inválida. "
                         "Digite um número da lista ou 0."
                     )
+        
 
     elif opcao == "3":
         if not lista_tarefas:
@@ -350,7 +371,62 @@ while True:
                         print("Tarefa excluída com sucesso.")
                     else:
                         print("Exclusão cancelada.")
+                
+                else:
+                    print("Número inválido. Escolha uma tarefa da lista.")
 
+
+    elif opcao == "5":
+        if not lista_tarefas:
+            print("Nenhuma tarefa cadastrada.")
+
+        else:
+            while True:
+                print("1 - Pendente")
+                print("2 - Em andamento")
+                print("3 - Concluída")
+                print("0 - Voltar ao menu")
+
+                escolha_status = input("Escolha o status: ").strip()
+
+                if escolha_status == "0":
+                    break
+
+                elif escolha_status in ["1", "2", "3"]:
+                    status_disponiveis = [
+                        "Pendente",
+                        "Em andamento",
+                        "Concluída"
+                    ]
+
+                    status_filtro = status_disponiveis[
+                        int(escolha_status) - 1
+                    ]
+
+                    quantidade = 0
+
+                    for tarefa in lista_tarefas:
+                        if tarefa["Status"] == status_filtro:
+                            quantidade += 1
+
+                            print(
+                                f"- {tarefa['titulo']} "
+                                f"| Prioridade: "
+                                f"{tarefa['prioridade'].capitalize()} "
+                                f"| Prazo: "
+                                f"{tarefa['prazo'].strftime('%d/%m/%Y %H:%M')} "
+                                f"| Responsável: "
+                                f"{tarefa['responsavel'] or 'Não atribuído'} "
+                                f"| Status: {tarefa['Status']}"
+                            )
+
+                    if quantidade == 0:
+                        print("Nenhuma tarefa encontrada nesse status.")
+                    else:
+                        print(f"Total encontrado: {quantidade}")
+
+                else:
+                    print("Opção inválida. Escolha 1, 2, 3 ou 0.")
 
     elif opcao == "0":
         print("Encerrando o TaskTracker.")
