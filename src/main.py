@@ -20,6 +20,7 @@ while True:
     print("1 - Criar tarefa")
     print("2 - Listar tarefas")
     print("3 - Editar tarefa")
+    print("4 - Excluir tarefa")
     print("0 - Sair")
 
     opcao = input("Escolha uma opção: ").strip()
@@ -321,8 +322,34 @@ while True:
                         "Digite um número da lista ou 0."
                     )
                             
+    elif opcao == "4":
+        if not lista_tarefas:
+            print("Nenhuma tarefa cadastrada para excluir.")
 
+        else:
+            while True:
+                print("Diga qual tarefa deseja excluir (0 para voltar):")
+                
+                for i, tarefa in enumerate(lista_tarefas, start=1):
+                    print(f"{i}. ({tarefa['titulo']})")
+                escolha_exclusão = input("Digite o numero da tarefa que deseja excluir (0 para voltar): ").strip()
 
+                if escolha_exclusão == "0":
+                    break
+
+                elif (
+                    escolha_exclusão.isdigit()
+                    and 1 <= int(escolha_exclusão) <= len(lista_tarefas)
+                ):
+                    index = int(escolha_exclusão) - 1
+                    tarefa = lista_tarefas[index]
+                    print(f"Tarefa a ser excluída: {tarefa['titulo']}")
+                    confirmacao = input("Tem certeza? (s/n): ").strip().lower()
+                    if confirmacao == "s":
+                        del lista_tarefas[index]
+                        print("Tarefa excluída com sucesso.")
+                    else:
+                        print("Exclusão cancelada.")
 
 
     elif opcao == "0":
